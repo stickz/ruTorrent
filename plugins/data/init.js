@@ -1,9 +1,9 @@
 plugin.loadLang();
 
 plugin.config = theWebUI.config;
-theWebUI.config = function()
+theWebUI.config = function(data)
 {
-	plugin.config.call(this);
+	plugin.config.call(this,data);
 	var oldDblClick = this.getTable("fls").ondblclick;
 	this.getTable("fls").ondblclick = function(obj) 
 	{

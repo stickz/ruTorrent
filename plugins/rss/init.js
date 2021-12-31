@@ -127,7 +127,7 @@ theWebUI.switchRSSLabel = function(el)
 }
 
 plugin.config = theWebUI.config;
-theWebUI.config = function()
+theWebUI.config = function(data)
 {
 	this.rssLabels = {};
 	this.rssItems = {};
@@ -151,7 +151,7 @@ theWebUI.config = function()
 		ondblclick:	function(obj) { theWebUI.rssDblClick(obj); return(false); },
 		ondelete:	function() { theWebUI.remove(); }
 	};
-	plugin.config.call(this);
+	plugin.config.call(this,data);
 	plugin.start();
 }
 
