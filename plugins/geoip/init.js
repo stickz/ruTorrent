@@ -60,7 +60,7 @@ var thePeersCache =
 };
 
 plugin.config = theWebUI.config;
-theWebUI.config = function()
+theWebUI.config = function(data)
 {
 	if(plugin.canChangeColumns())
 	{
@@ -90,7 +90,7 @@ theWebUI.config = function()
 		if(plugin.retrieveComments)
 			this.tables.prs.columns.push({text : 'Comment', width : '200px', id: 'comment', type : TYPE_STRING});
 	}
-	plugin.config.call(this);
+	plugin.config.call(this,data);
 	if((plugin.retrieveCountry || plugin.retrieveComments) && plugin.canChangeColumns())
 		plugin.done();
 }

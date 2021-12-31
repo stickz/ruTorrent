@@ -171,8 +171,7 @@ var theWebUI =
 	sTimer: 	null,
 	updTimer: 	null,
 	configured:	false,
-	jsonLoaded:	false,
-	pluginsLoaded: false,
+	jsonLoaded: false,
 	firstLoad:	true,
 	interval:	-1,
 	torrents:	{},
@@ -221,7 +220,6 @@ var theWebUI =
 		else
 		{
 			this.catchErrors(false);
-			this.getUISettings();
 			this.getPlugins();
 		}
 	},
@@ -312,15 +310,11 @@ var theWebUI =
 
 	getPlugins: function()
 	{
-		this.requestWithoutTimeout("?action=getplugins", [this.loadPlugins, this]);
+		this.requestWithoutTimeout("?action=getuisettings", [this.addSettings, this], true);
+		this.requestWithoutTimeout("?action=getplugins", [this.getUISettings, this]);
 	},
 
 	getUISettings: function()
-	{
-		this.requestWithoutTimeout("?action=getuisettings", [this.addSettings, this], true);
-	},
-
-	loadPlugins: function()
 	{
 		if(thePlugins.isInstalled("_getdir"))
 		{
@@ -334,24 +328,16 @@ var theWebUI =
 		correctContent();
 		this.updateServerTime();
 		window.setInterval( this.updateServerTime, 1000 );
-		// Mark plugins as done loading. Initialize UI if JSON file is loaded
-		this.pluginsLoaded = true;
 		this.initFinish();
 	},
 
 	initFinish: function()
 	{
-		// Loading JSON settings and plugins are done in an asynchronous fashion
-		// We must wait until both of these are completed before preceding
-		// Otherwise, the WebUI and plugins will not initialize properly
-		if (this.jsonLoaded && this.pluginsLoaded)
-		{
-			this.config();
-			this.catchErrors(true);
-			this.assignEvents();
-			this.resize();
-			this.update();	
-		}
+		this.config();
+		this.catchErrors(true);
+		this.assignEvents();
+		this.resize();
+		this.update();		
 	},
 
 	config: function()
@@ -666,9 +652,7 @@ var theWebUI =
 		if($type(this.settings["webui.search"]))
 			theSearchEngines.set(this.settings["webui.search"],true);
 		
-		// Mark JSON file as done loaded. Initialize UI if plugins are loaded
 		this.jsonLoaded = true;
-		this.initFinish();
    	},
 
 	setSettings: function() 
