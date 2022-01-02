@@ -1746,6 +1746,9 @@ var theWebUI =
 
 		$('#viewrows').text(table.viewRows + '/' + table.rows);
 
+		// Cleanup memory leaks
+		tArray = null;
+		table = null;
 		data = null;
 	},
 
