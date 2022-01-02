@@ -1,4 +1,5 @@
 <?php
+require_once( 'ExternalPath.php' );
 
 function stripSlashesFromArray(&$arr)
 {
@@ -480,7 +481,7 @@ function cachedEcho( $content, $type = null, $cacheable = false, $exit = true )
 		        	$encoding = 'gzip'; 
 			if($encoding && ($len>=2048))
 			{
-				$gzip = getExternal('gzip');
+				$gzip = ExternalPath::load()->getExternalPathEx('gzip');
 				header('Content-Encoding: '.$encoding); 
 				$randName = getTempFilename('answer');
 				file_put_contents($randName,$content);
