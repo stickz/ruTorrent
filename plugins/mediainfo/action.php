@@ -1,7 +1,6 @@
 <?php
 
 require_once( dirname(__FILE__).'/../_task/task.php' );
-require_once( dirname(__FILE__)."/../../php/ExternalPath.php");
 eval( getPluginConf( 'mediainfo' ) );
 
 class mediainfoSettings
@@ -58,8 +57,7 @@ if(isset($_REQUEST['hash']) &&
 						file_put_contents( $randName, $st->data["mediainfotemplate"] );
 						$flags = "--Inform=file://".escapeshellarg($randName);
 					}
-					$mediainfo = ExternalPath:load()->getExternalPathEx("mediainfo");
-					$commands[] = $mediainfo." ".$flags." ".escapeshellarg($filename);
+					$commands[] = getExternal("mediainfo")." ".$flags." ".escapeshellarg($filename);
 					$ret = $task->start($commands, rTask::FLG_WAIT);
 				}
 			}

@@ -6,18 +6,15 @@ require_once( 'unpack.php' );
 if($do_diagnostic)
 {
 	if(USE_UNZIP)
-		$remoteRequests->findRemoteEXE('unzip',"thePlugins.get('unpack').showError('theUILang.unzipNotFound');");
+		findRemoteEXE('unzip',"thePlugins.get('unpack').showError('theUILang.unzipNotFound');",$remoteRequests);
 	if(USE_UNRAR)
-		$remoteRequests->findRemoteEXE('unrar',"thePlugins.get('unpack').showError('theUILang.unrarNotFound');");
+		findRemoteEXE('unrar',"thePlugins.get('unpack').showError('theUILang.unrarNotFound');",$remoteRequests);
 }
 if(USE_UNZIP || USE_UNRAR)
 {
 	$up = rUnpack::load();
 	if($up->setHandlers())
 	{
-		$ep->fetchExternalPath('unzip');
-		$ep->fetchExternalPath('unrar');
-		
 		$jResult .= ("plugin.useUnzip = ".(USE_UNZIP ? "true;" : "false;"));
 		$jResult .= ("plugin.useUnrar = ".(USE_UNRAR ? "true;" : "false;"));
 		$jResult .= $up->get();

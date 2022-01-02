@@ -241,7 +241,6 @@ class rRatioRulesList
 		global $rootPath;
 	        $throttleRulesExist = false;
 	        $ratioRulesExist = false;
-		$php = ExternalPath::load()->getPHP();
 		foreach( $this->lst as $item )
 		{
 			if($item->ratio!='')
@@ -257,7 +256,7 @@ class rRatioRulesList
 				$insCmd .= (getCmd('d.views.has=').'rat_'.$i.',,');
 			$ratCmd = 
                                 getCmd('d.set_custom').'=x-extratio1,"$'.getCmd('execute_capture').
-                                '={'.$php.','.$rootPath.'/plugins/extratio/update.php,\"$'.getCmd('t.multicall').'=$'.getCmd('d.get_hash').'=,'.getCmd('t.get_url').'=,'.getCmd('cat').'=#\",$'.getCmd('d.get_custom1').'=,ratio,'.getUser().'}" ; '.
+                                '={'.getPHP().','.$rootPath.'/plugins/extratio/update.php,\"$'.getCmd('t.multicall').'=$'.getCmd('d.get_hash').'=,'.getCmd('t.get_url').'=,'.getCmd('cat').'=#\",$'.getCmd('d.get_custom1').'=,ratio,'.getUser().'}" ; '.
                                 getCmd('branch').'=$'.getCmd('not').'=$'.getCmd('d.get_custom').'=x-extratio1,,'.$insCmd.
                                 getCmd('view.set_visible').'=$'.getCmd('d.get_custom').'=x-extratio1';
 		}
@@ -266,7 +265,7 @@ class rRatioRulesList
 		if($throttleRulesExist)
 			$thrCmd = 
                                 getCmd('d.set_custom').'=x-extratio2,"$'.getCmd('execute_capture').
-                                '={'.$php.','.$rootPath.'/plugins/extratio/update.php,\"$'.getCmd('t.multicall').'=$'.getCmd('d.get_hash').'=,'.getCmd('t.get_url').'=,'.getCmd('cat').'=#\",$'.getCmd('d.get_custom1').'=,channel,'.getUser().'}" ; '.
+                                '={'.getPHP().','.$rootPath.'/plugins/extratio/update.php,\"$'.getCmd('t.multicall').'=$'.getCmd('d.get_hash').'=,'.getCmd('t.get_url').'=,'.getCmd('cat').'=#\",$'.getCmd('d.get_custom1').'=,channel,'.getUser().'}" ; '.
                                 getCmd('branch').'=$'.getCmd('not').'=$'.getCmd('d.get_custom').'=x-extratio2,,'.
                                 getCmd('d.set_throttle_name').'=$'.getCmd('d.get_custom').'=x-extratio2';
 		else

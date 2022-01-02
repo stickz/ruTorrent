@@ -6,7 +6,6 @@ class rCloudflare
 {
 	protected $client = null;
 	protected $url = null;
-	protected $path = ExternalPath:load();
 
 	public function __construct( $client, $url )
 	{
@@ -24,15 +23,10 @@ class rCloudflare
 //			(stripos( $this->client->results, "jschl_answer" ) !== false) 
 			);
 	}
-	
-	private function escapeshellarg_python()
-	{
-		return escapeshellarg($path->getExternalPathEx('python'));		
-	}
 
 	public static function is_module_present()
 	{
-		exec( escapeshellarg_python()." -c \"import cloudscraper\" > /dev/null 2>&1", $output, $error_code);
+		exec( escapeshellarg(getExternal('python'))." -c \"import cloudscraper\" > /dev/null 2>&1", $output, $error_code);
 		return($error_code === 0);
 	}
 
@@ -58,7 +52,7 @@ class rCloudflare
 			{
 				$recaptcha = ",recaptcha={\"provider\": \"$cloudscraper_recaptcha[provider]\",\"api_key\": \"$cloudscraper_recaptcha[api_key]\",\"username\": \"$cloudscraper_recaptcha[username]\",\"password\": \"$cloudscraper_recaptcha[password]\"},delay=15";
 			}
-			$code = escapeshellarg_python()." -c ".
+			$code = escapeshellarg(getExternal('python'))." -c ".
 				escapeshellarg("import cloudscraper\nimport json\ntokens, user_agent = cloudscraper.get_tokens({$url}{$proxies}{$recaptcha})\nprint(json.dumps([tokens,user_agent]))");
 			$data = `{$code}`;
 			if($data &&

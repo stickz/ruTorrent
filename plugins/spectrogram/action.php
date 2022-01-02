@@ -1,7 +1,6 @@
 <?php
 
 require_once( dirname(__FILE__).'/../_task/task.php' );
-require_once( dirname(__FILE__)."/../../php/ExternalPath.php");
 eval( getPluginConf( 'spectrogram' ) );
 
 $ret = array();
@@ -32,8 +31,7 @@ if(isset($_REQUEST['cmd']))
 						$mediafile = basename($filename);
 						$commands = array();
 						$name = '"${dir}"/frame.png';
-						$sox = ExternalPath:load()->getExternalPathEx("sox");
-						$commands[] = $sox.
+						$commands[] = getExternal("sox").
 								" ".escapeshellarg($filename)." ".
 								implode( " ", array_map( "escapeshellarg", explode(" ",$arguments) ) ).
 								' -t '.escapeshellarg($mediafile).' -o '.

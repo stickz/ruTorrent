@@ -2,7 +2,6 @@
 require_once( dirname(__FILE__)."/../../php/xmlrpc.php" );
 require_once( dirname(__FILE__)."/../../php/cache.php");
 require_once( dirname(__FILE__)."/../../php/settings.php");
-require_once( dirname(__FILE__)."/../../php/ExternalPath.php");
 require_once( dirname(__FILE__).'/../_task/task.php' );
 eval( getPluginConf( 'unpack' ) );
 
@@ -172,10 +171,9 @@ class rUnpack
 			if(!$qt->check())
 				return;
 		}
-		
-		$external = ExternalPath::load();
-		$pathToUnrar = $external->getExternalPathEx("unrar");
-		$pathToUnzip = $external->getExternalPathEx("unzip");
+
+		$pathToUnrar = getExternal("unrar");
+		$pathToUnzip = getExternal("unzip");
 		$zipPresent = false;
 		$rarPresent = false;		
 		$outPath = $this->path;
@@ -307,8 +305,6 @@ class rUnpack
 		);
 		if(($outPath!='') && !rTorrentSettings::get()->correctDirectory($outPath))	
 			$outPath = '';
-		
-		$external = ExternalPath::load();
 
 		if(!empty($mode))
 	        {
@@ -331,7 +327,7 @@ class rUnpack
 					$outPath = dirname($filename);
 
 				$commands = array();
-				$arh = $external->getExternalPathEx( ($mode == "zip") ? 'unzip' : 'unrar' );
+				$arh = getExternal( ($mode == "zip") ? 'unzip' : 'unrar' );
 				$commands[] = escapeshellarg($rootPath.'/plugins/unpack/un'.$mode.'_file.sh')." ".
 					escapeshellarg($arh)." ".
 					escapeshellarg($filename)." ".
@@ -389,8 +385,8 @@ class rUnpack
 					$mode = ($rarPresent && $zipPresent) ? 'all' : ($rarPresent ? 'rar' : ($zipPresent ? 'zip' : null));
 					if($mode)
 					{
-						$pathToUnrar = $external->getExternalPathEx("unrar");
-						$pathToUnzip = $external->getExternalPathEx("unzip");
+						$pathToUnrar = getExternal("unrar");
+						$pathToUnzip = getExternal("unzip");
 						$arh = (($mode == "zip") ? $pathToUnzip : $pathToUnrar);
 						if(is_dir($basename))
 						{
@@ -439,9 +435,8 @@ class rUnpack
 		global $rootPath;
 		if($this->enabled)
 		{
-			$php = ExternalPath::load()->getPHP();
 			$cmd =  rTorrentSettings::get()->getOnFinishedCommand( array('unpack'.getUser(), 
-					getCmd('execute').'={'.$php.','.$rootPath.'/plugins/unpack/update.php,$'.getCmd('d.get_directory').'=,$'.getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').
+					getCmd('execute').'={'.getPHP().','.$rootPath.'/plugins/unpack/update.php,$'.getCmd('d.get_directory').'=,$'.getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').
 					'=,$'.getCmd('d.get_custom1').'=,$'.getCmd('d.get_name').'=,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_custom').'=x-dest,'.getUser().'}'));
 		}
 		else

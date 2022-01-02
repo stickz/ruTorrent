@@ -144,7 +144,6 @@ class rAutoTools
 	{
 		global $autowatch_interval;
 		$theSettings = rTorrentSettings::get();
-		$php = ExternalPath::load()->getPHP();
 		$req = new rXMLRPCRequest( 
 // old version fix
 			$theSettings->getOnInsertCommand(array('autolabel'.getUser(), getCmd('cat=')))
@@ -154,7 +153,7 @@ class rAutoTools
 		if($this->enable_label)
 			$cmd = 	$theSettings->getOnInsertCommand(array('_autolabel'.getUser(), 
 				getCmd('branch').'=$'.getCmd('not').'=$'.getCmd("d.get_custom1").'=,"'.
-				getCmd('execute').'={'.$php.','.$pathToAutoTools.'/label.php,$'.getCmd("d.get_hash").'=,'.getUser().'}"'));
+				getCmd('execute').'={'.getPHP().','.$pathToAutoTools.'/label.php,$'.getCmd("d.get_hash").'=,'.getUser().'}"'));
 		else
 			$cmd = 	$theSettings->getOnInsertCommand(array('_autolabel'.getUser(), getCmd('cat=')));
 		$req->addCommand($cmd);
@@ -164,7 +163,7 @@ class rAutoTools
 			{
 				$cmd = 	$theSettings->getOnFinishedCommand(array('automove'.getUser(), 
 						getCmd('d.set_custom').'=x-dest,"$'.getCmd('execute_capture').
-						'={'.$php.','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
+						'={'.getPHP().','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
 						getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').'=,$'.getCmd('d.get_custom1').'=,$'.getCmd('d.get_name').'=,'.getUser().'}" ; '.
 						getCmd('branch').'=$'.getCmd('not').'=$'.getCmd('d.get_custom').'=x-dest,,'.getCmd('d.set_directory_base').'=$'.getCmd('d.get_custom').'=x-dest'
 					));
@@ -175,9 +174,9 @@ class rAutoTools
 				{
 					$cmd = 	$theSettings->getOnFinishedCommand(array('automove'.getUser(), 
 							getCmd('d.set_directory_base').'="$'.getCmd('execute_capture').
-							'={'.$php.','.$pathToAutoTools.'/check.php,$'.getCmd('d.get_base_path').'=,$'.
+							'={'.getPHP().','.$pathToAutoTools.'/check.php,$'.getCmd('d.get_base_path').'=,$'.
 							getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').'=,$'.getCmd('d.get_custom1').'=,$'.getCmd('d.get_name').'=,'.getUser().'}" ; '.
-							getCmd('execute').'={'.$php.','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
+							getCmd('execute').'={'.getPHP().','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
 							getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').'=,$'.getCmd('d.get_custom1').'=,$'.getCmd('d.get_name').'=,'.getUser().'}'
 						));
 				}
@@ -185,7 +184,7 @@ class rAutoTools
 				{
 					$cmd = 	$theSettings->getOnFinishedCommand(array('automove'.getUser(),
 							getCmd('d.set_custom').'=x-dest,"$'.getCmd('execute_capture'). 
-							'={'.$php.','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
+							'={'.getPHP().','.$pathToAutoTools.'/move.php,$'.getCmd('d.get_hash').'=,$'.getCmd('d.get_base_path').'=,$'.
 							getCmd('d.get_base_filename').'=,$'.getCmd('d.is_multi_file').'=,$'.getCmd('d.get_custom1').'=,$'.getCmd('d.get_name').'=,'.getUser().'}"'
 						));
 				}
@@ -196,7 +195,7 @@ class rAutoTools
 		$req->addCommand($cmd);
 		if($this->enable_watch && (trim($this->path_to_watch)!='')) 
 			$cmd = 	$theSettings->getAbsScheduleCommand('autowatch',$autowatch_interval,
-				getCmd('execute').'={sh,-c,'.escapeshellarg($php).' '.escapeshellarg($pathToAutoTools.'/watch.php').' '.escapeshellarg(getUser()).' &}' );
+				getCmd('execute').'={sh,-c,'.escapeshellarg(getPHP()).' '.escapeshellarg($pathToAutoTools.'/watch.php').' '.escapeshellarg(getUser()).' &}' );
 		else
 			$cmd = $theSettings->getRemoveScheduleCommand('autowatch');
 		$req->addCommand($cmd);
