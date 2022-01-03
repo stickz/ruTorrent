@@ -61,6 +61,6 @@ if(isset($_REQUEST["tracker"]))
 	}
 }
 
-header("HTTP/1.0 302 Moved Temporarily");
-header("Location: ./trackers/unknown.png");
+$name = dirname(__FILE__)."/trackers/unknown.png";
+SendFile::send($name, "image/png");
 exit();
